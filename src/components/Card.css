@@ -1,0 +1,216 @@
+
+.card {
+  width: 20vw;
+  height: 20vh;
+  display: grid;
+
+  border-radius: 8px;
+  border: 1px solid transparent;
+  
+  background-color: #e2e2e2;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 3%;
+  padding: 12px 20px;  
+  
+  justify-self: center;
+
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.cardText {
+  /*font-size: 70%;*/
+  font-size: 1.75em;
+  float: left;
+  width: inherit;
+}
+
+.cardSymbol {
+  font-size: 1vw;
+  float: left;
+}
+
+.cardPrice {
+  font-size: 1.5em;
+  justify-self: right;
+}
+
+.cardPct {
+  font-size: 1.4em;
+  justify-self: right;
+}
+
+.cardDate {
+  justify-self: right;
+}
+
+.card:hover {
+  border-color: #646cff;
+  border-width: 0.15em;
+}
+
+.priceUp{
+  color: rgb(93, 187, 0);
+}
+
+.priceDown{
+  color: rgb(250, 52, 52);
+}
+
+.cardDate{
+  font-size: 1vh;
+  float: right;
+}
+
+
+@media screen and (max-width: 1200px) {
+  .card{
+    width: 40vw;
+    grid-template-rows: [name] 30% [price] 35% [pct] 35%; /*[date] 20%;*/
+    grid-template-areas: 
+    "name"
+    "price"
+    "pct";
+    /*"date";*/
+    justify-content: center;
+  }
+  .cardText{
+    grid-area: name;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
+
+  .cardPrice{
+    grid-area: price;
+    justify-self: center;
+    align-self: center;
+
+  }
+  .cardPct{
+    grid-area: pct;
+    justify-self: center;
+  }
+  .cardDate{
+    
+    grid-area: date;
+    /*justify-self: center;
+    font-size: .5rem;*/
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1920px) {
+  .card{
+    padding-left: 5px;
+    grid-template-columns: [name] 30% [info] 70%;
+    grid-template-rows: [price] 40% [pct] 30% [date] 30%;
+    grid-template-areas: 
+    ". price"
+    "name pct"
+    "symbol date";
+  }
+
+  .cardText {
+    grid-area: name;
+    align-self: center;
+    justify-self: start;
+    padding-left: 2%;
+  }
+
+  .cardSymbol {
+    grid-area: symbol;
+    align-self: center;
+    justify-self: center;
+    padding-left: 2%;
+  }
+
+  .cardPrice{
+    grid-area: price;
+    font-size: 2em;
+    align-self: center;
+  }
+  .cardPct{
+    grid-area: pct;
+    font-size: 1.5em;
+    align-self: center;
+  }
+  .cardDate{
+    grid-area: date;
+    font-size: 0.8em;
+    align-self: center;
+  } 
+  
+}
+
+.cardArea{
+  display: flex;
+}
+
+/*
+.deleteBtn {
+  align-self: center;
+  text-align: center;
+  border-radius: 50%;
+  background-color: transparent;
+  color: black;
+  border: 1px solid gray;
+  
+  --resp-radius: 5vw;
+  width: var(--resp-radius);
+  height: var(--resp-radius);
+}
+
+.deleteBtn:hover {
+  background-color: #bdbdbd;
+  color: white;
+  border-color: white;
+}*/
+
+.shellBtn{
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline: none;
+  padding: 1px;
+
+  /*width: 10vw;*/
+  display: flex;
+}
+
+
+
+.btnStyle {
+  align-self: center;
+  border-radius: 50%;
+  background-color: transparent;
+  fill: #8f8f8f
+}
+
+.deleteBtn:hover {
+  fill: #ff0000;
+}
+
+.notifBtn:hover {
+  fill: #000000;
+}
+
+.btnArea{
+  display: grid;
+  justify-items: center;
+}
+
+.btn-group{
+  padding-right: 2%;
+}
+
+.modal-footer{
+  display: grid;
+  justify-content: center;
+}

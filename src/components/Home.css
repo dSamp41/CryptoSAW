@@ -1,0 +1,14 @@
+.startText {
+    text-align: center;
+    color: black;
+}
+
+
+.links{
+    color: #FF4B2B;
+    font-weight: bold;
+}
+
+.links:hover {
+    text-decoration: underline;
+}

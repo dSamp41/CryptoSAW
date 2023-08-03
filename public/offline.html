@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CryptoSAW</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg header">
+      <div class="container-fluid">
+          <a class="navbar-brand">CryptoSAW</a>
+      </div>
+    </nav>
+
+    <div class="main">
+      <h1>Sei offline</h1>
+      <p class='text'>Controlla la tua connessione my brother in Christ💀💀</p>
+      <button class='btn refreshBtn' onclick=window.location.reload()>Refresh</button>
+    </div>
+  </body>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+    body{
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    h1 {
+      font-weight: bold;
+    }
+
+    .header{  
+      top: 0;
+      width: 100%;
+      position: fixed;
+      left: 0px;
+      background: linear-gradient(to right, #FF4B2B, #FF416C);/*rgb(138, 189, 255);*/
+      --bs-bg-opacity: 1;
+      z-index: 5;
+    }   
+
+    .navbar{
+      height: 8.6vh;
+      display: flex;
+    }
+
+    .navbar>.container-fluid {
+      display: flex;
+      flex-wrap: inherit;
+      align-items: center;
+      justify-content: space-between;
+      justify-self: center;
+
+
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 0;
+      width: 100%;
+      padding-right: calc(var(--bs-gutter-x) * 0.5);
+      padding-left: calc(var(--bs-gutter-x) * 0.5);
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .navbar-brand {
+      --bs-navbar-brand-padding-y: 0.3125rem;
+      --bs-navbar-brand-margin-end: 1rem;
+      --bs-navbar-brand-font-size: 1.25rem;
+  
+      padding-top: var(--bs-navbar-brand-padding-y);
+      padding-bottom: var(--bs-navbar-brand-padding-y);
+      margin-right: var(--bs-navbar-brand-margin-end);
+      font-size: var(--bs-navbar-brand-font-size);
+      text-decoration: none;
+      white-space: nowrap;
+
+      color: white;
+      font-weight: bold;
+    }
+
+    .navbar-brand:hover {
+      color: black;
+    }
+
+    .nav-link{
+      color: white;
+    }
+
+    select {
+      background: none;
+      padding: 0;
+    }
+
+    .dropdown:hover .dropdown-menu  {
+      display: block;
+      margin-top: 0;
+    }
+
+    .bi{
+      width: 1em;
+      height: 1em;
+    }
+
+    .main{
+      display: grid;
+      padding-top: 10vh;
+      justify-items: center;
+    }
+
+    .text {
+      justify-self: center;
+    }
+
+    .btn {
+      border-radius: 20px;
+      border: 1px solid #FF4B2B;
+      background-color: #FF4B2B;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: transform 80ms ease-in;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    .btn:focus {
+      outline: none;
+    }
+
+  </style>
+</html>

@@ -1,0 +1,51 @@
+.BT{
+    /*overflow: hidden;*/
+    overflow-y: scroll;
+    height: 70%;
+}
+
+table {
+    overflow: scroll;
+    border-collapse: collapse;
+}
+
+
+th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+
+td {
+    padding: 0 20px;
+    font-weight: 500;
+}
+
+.name {
+    font-size: var(--bs-body-font-size);
+    font-weight: 500;
+}
+
+.symbol {
+    align-items: center;
+}
+
+.priceUpAnim{
+    animation: changeColorUp 3s ease-out;
+    
+}
+
+@keyframes changeColorUp {
+    from { color: rgb(93, 187, 0); background-color: rgba(93, 187, 0, 0.5); }
+    to   { color: black }
+}
+
+.priceDownAnim{
+    animation: changeColorDown 3s ease-out;
+}
+
+@keyframes changeColorDown {
+    from { color: rgb(250, 52, 52); background-color: rgba(250, 52, 52, 0.5) }
+    to   { color: black }
+}
