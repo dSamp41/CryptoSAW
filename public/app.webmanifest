@@ -6,6 +6,7 @@
   "start_url": "/?source=pwa",
   "id": "/",
   "theme_color": "red",
+  "background_color": "white",
   "icons": [
     {
       "src": "icon/192.png",

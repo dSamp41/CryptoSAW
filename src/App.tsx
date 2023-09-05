@@ -3,30 +3,20 @@ import { Routes, Route } from 'react-router-dom'
 
 import Header from './components/Header'
 import Home from './components/Home'
-
-import Wallet from './components/Wallet'
-//import {LoginForm} from './components/LoginForm_2.0'
-//import Overview from './components/Overview'
-//import Selection from './components/Selection'
-const LoginForm =  lazy(() => import('./components/LoginForm_2.0'));
+import Loading from './components/Loading';
+const Wallet = lazy(() => import('./components/Wallet'));
+const LoginForm =  lazy(() => import('./components/LoginForm'));
 const Overview = lazy(() => import('./components/Overview'));
 const Selection = lazy(() => import('./components/Selection'));
 
-/*const Wallet = lazy(() => import('./components/Wallet'));
-const LoginForm = lazy(() => import('./components/LoginForm'));
-*/
-
+import { Toaster } from "react-hot-toast";
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from './firebaseConf'
 import { AssetsContext, UserContext } from './AppContext'
+import { AllAssetsResponse, AssetDataObj, headers } from './components/cryptoUtil';
 
 import './App.css'
-
-/*
-const req = await fetch(`https://api.coincap.io/v2/assets/`)
-const json = await req.json();
-const ASSETS: string[] = json.data.map((el: any) => (el.id))*/
 
 
 function App() {
@@ -34,25 +24,24 @@ function App() {
   const [ASSETS, setASSETS] = useState<string[]>([])
 
   useEffect(() => {
-    fetch(`https://api.coincap.io/v2/assets/`)
+    fetch(`https://api.coincap.io/v2/assets/`, {method: "GET", headers: headers})
       .then((resp) => resp.json())
-      .then((json) => setASSETS(json.data.map((el: any) => (el.id as string))))
+      .then((json: AllAssetsResponse) => setASSETS(json.data.map((el: AssetDataObj) => (el.id))))
       .catch((err) => console.error(err))
   }, [])
 
   
   onAuthStateChanged( getAuth(), (user) => {
-    if(user){
-      const docRef = doc(db, 'users', user.uid)
-
-      getDoc(docRef)
-        .then((docSnap) => {          
-          if(docSnap.exists()){
-            setUserAssets(docSnap.data().assets);
-          }
-        })
-        .catch((err) => console.error(err))
-    }
+    if(!user) return;
+    
+    const docRef = doc(db, 'users', user.uid)
+    getDoc(docRef)
+      .then((docSnap) => {          
+        if(docSnap.exists()){ 
+          setUserAssets(docSnap.data().assets as string[]);
+        }
+      })
+      .catch((err) => console.error(err))
   })
 
   
@@ -62,7 +51,7 @@ function App() {
       <div className='mainPos'>
         <AssetsContext.Provider value={ASSETS}>
           <UserContext.Provider value={userAssets}>
-            <Suspense fallback={<p>Loading</p>}>
+            <Suspense fallback={<Loading/>}>
               <Routes>
                 <Route path='/' element={<Home/>}/>
                 <Route path='/overview' element={<Overview/>}/>
@@ -73,6 +62,8 @@ function App() {
             </Suspense>
           </UserContext.Provider>
         </AssetsContext.Provider>
+
+        <Toaster position='bottom-center'/>
       </div>
     </div>
   );

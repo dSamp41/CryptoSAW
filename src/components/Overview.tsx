@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Crypto, START_CRYPTO } from './cryptoUtil.ts';
+import { AssetResponse, Crypto, RespToCrypto, START_CRYPTO, headers } from './cryptoUtil.ts';
 import { usePrevious } from "@/hooks/usePrevious.ts";
 import { AssetsContext } from "@/AppContext.ts";
 
@@ -17,9 +17,9 @@ function Row({ asset }: { asset: string}){
         const jsonData = await response.json();
         
         setCryptoData(jsonData.data as Crypto);*/
-        fetch(`https://api.coincap.io/v2/assets/${asset}`)
+        fetch(`https://api.coincap.io/v2/assets/${asset}`, {method: "GET", headers: headers})
             .then( (resp) => resp.json())
-            .then( (json) => setCryptoData(json.data as Crypto))  
+            .then( (json: AssetResponse) => setCryptoData(RespToCrypto(json.data)))  
             .catch( (err) => console.error(err));
     };
 
@@ -30,9 +30,10 @@ function Row({ asset }: { asset: string}){
         return () => {clearInterval(int)}   //stop api calls when component get unmounted
     }, []);
 
-    const priceIncrCond: boolean = (cryptoData.priceUsd - oldValue!.priceUsd) > 0
-    const changeIncr24Hr: boolean = Number(cryptoData.changePercent24Hr) > 0
+    const priceIncrCond: boolean = (cryptoData.priceUsd - oldValue.priceUsd) > 0;
+    const changeIncr24Hr: boolean = cryptoData.changePercent24Hr > 0;
 
+    if(cryptoData === START_CRYPTO) return(<></>);
     return(
         <tr key={asset}>
             <td key={asset+'Title'}>
@@ -63,7 +64,7 @@ export default function Overview() {
             </thead>
 
             <tbody key='tbody' className="table-group-divider">
-                {ALL_ASSETS.slice(0, 20).map( ( el: string ) => (<Row asset={el} key={el}/>))}
+                {ALL_ASSETS.slice(0, 50).map( ( el: string ) => (<Row asset={el} key={el}/>))}
             </tbody>
         </table>
     </div>

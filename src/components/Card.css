@@ -1,4 +1,3 @@
-
 .card {
   width: 20vw;
   height: 20vh;
@@ -24,7 +23,7 @@
 
 .cardText {
   /*font-size: 70%;*/
-  font-size: 1.75em;
+  font-size: 1.5em;
   float: left;
   width: inherit;
 }
@@ -104,7 +103,7 @@
   }
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1920px) {
+@media screen and (min-width: 1200px){
   .card{
     padding-left: 5px;
     grid-template-columns: [name] 30% [info] 70%;
@@ -120,6 +119,7 @@
     align-self: center;
     justify-self: start;
     padding-left: 2%;
+    width: 10vw;
   }
 
   .cardSymbol {
@@ -151,26 +151,6 @@
   display: flex;
 }
 
-/*
-.deleteBtn {
-  align-self: center;
-  text-align: center;
-  border-radius: 50%;
-  background-color: transparent;
-  color: black;
-  border: 1px solid gray;
-  
-  --resp-radius: 5vw;
-  width: var(--resp-radius);
-  height: var(--resp-radius);
-}
-
-.deleteBtn:hover {
-  background-color: #bdbdbd;
-  color: white;
-  border-color: white;
-}*/
-
 .shellBtn{
   background-color: transparent;
   background-repeat: no-repeat;
@@ -183,7 +163,6 @@
   /*width: 10vw;*/
   display: flex;
 }
-
 
 
 .btnStyle {
@@ -210,7 +189,16 @@
   padding-right: 2%;
 }
 
+.modal-body {
+  display: flex;
+  justify-content: center;
+}
+
 .modal-footer{
   display: grid;
   justify-content: center;
+}
+
+#ToggleGroup {
+  padding-bottom: 2%;
 }

@@ -7,13 +7,8 @@ import './Home.css'
 export default function Home(){
     const [isLogged, setIsLogged] = useState<boolean>(false);
     
-    onAuthStateChanged( getAuth(), async (user) => {
-        if(user){
-            setIsLogged(true);     
-        }
-        else{
-            setIsLogged(false);
-        }
+    onAuthStateChanged( getAuth(), (user) => {
+        user? setIsLogged(true) : setIsLogged(false);
     })
   
     

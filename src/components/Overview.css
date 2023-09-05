@@ -1,7 +1,6 @@
 .BT{
-    /*overflow: hidden;*/
     overflow-y: scroll;
-    height: 70%;
+    height: 80%;
 }
 
 table {

@@ -6,13 +6,17 @@ span {
 	font-size: 12px;
 }
 
-button .ghost {
+.ghost {
 	background-color: transparent;
 	border-color: #FFFFFF;
 }
 
-button .create {
+.create {
     margin-top: 2%;
+}
+
+.create:hover{
+	background-color: #b12f18;
 }
 
 form {
@@ -174,6 +178,15 @@ form {
 	margin: 0 5px;
 	height: 40px;
 	width: 40px;
+}
+
+.social:hover{
+	background-color: rgb(226, 226, 226);
+}
+
+.social:active{
+	transform: scale(0.95);
+
 }
 
 .resetPw:hover{

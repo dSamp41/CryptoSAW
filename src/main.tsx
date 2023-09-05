@@ -5,17 +5,14 @@ import App from './App.tsx'
 import { getAuth } from 'firebase/auth'
 import { arrayRemove, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from './firebaseConf.ts'
-import { NotifEvent} from './components/cryptoUtil.ts';
+import { AssetResponse, NotifEvent} from './components/cryptoUtil.ts';
 
 import './index.css'
 
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register("../serviceWorker.js")
-    .then((registration) => {
-      console.log("Service worker successfully registered: ", registration ); 
-      console.log(`Scope: ${registration.scope}`)})
+  navigator.serviceWorker.register("../serviceWorker.js")
+    .then((registration) => {console.log("Service worker successfully registered: ", registration)})
     .catch((err) => console.error("Service worker failed to install: ", err));
 }
 
@@ -33,44 +30,47 @@ window.addEventListener("offline", () => {
 
 //NOTIFICATION HANDLING
 if(!("Notification" in window)){
-    alert("This browser does not support desktop notification");
+  alert("This browser does not support desktop notification");
 }
 else{
-    Notification.requestPermission()
-      .then( (permission) => {
-        if (permission !== 'granted') console.error("Permission was not granted.")
-      })
-      .catch( (error) => console.log(error));
+  Notification.requestPermission()
+    .then( (permission) => {
+      if (permission !== 'granted') console.error("Permission was not granted.")
+    })
+    .catch( (error) => console.log(error));
 }
 
 
 export function sendNotification(message: string) {
-    if (!("Notification" in window)) {
-        alert("This browser does not support desktop notification");
-    } 
-    else if (Notification.permission === "granted") {
-        navigator.serviceWorker.ready
-          .then( (registration) => {registration.showNotification(message, {vibrate: [200, 100, 200]})})
-          .catch( (error) => console.log(error));
-    } 
-    else if (Notification.permission !== "denied") {
-        Notification.requestPermission()
-            .then((permission) => {
-                // If the user accepts, create a notification
-                if (permission === "granted") {
-                    navigator.serviceWorker.ready
-                    .then((registration) => {registration.showNotification(message, {vibrate: [200, 100, 200]})})
-                    .catch((err) => console.error(err));
-                }
-            })
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  } 
+  else if (Notification.permission === "granted") {
+    navigator.serviceWorker.ready
+      .then( (registration) => {
+        registration.showNotification(message, 
+          {vibrate: [200, 100, 200], icon:'/icon/maskable_icon.png'})
+      })
+      .catch( (error) => console.log(error));
+  } 
+  else if (Notification.permission !== "denied") {
+    Notification.requestPermission()
+      .then((permission) => {
+        // If the user accepts, create a notification
+        if (permission === "granted") {
+            navigator.serviceWorker.ready
+            .then((registration) => {registration.showNotification(message, {vibrate: [200, 100, 200]})})
             .catch((err) => console.error(err));
-    }
+        }
+      })
+      .catch((err) => console.error(err));
+  }
   
-    // if user has denied notifications, no need to bother them.
+  // if user has denied notifications, no need to bother them.
 }
 
 
-//PERIODIC BACKGROUND SYNC
+//PERIODIC DB (idealmente da fare in service worker)
 async function checkNotificationEvent(){
   //get notifEvent from db;
   const user = getAuth().currentUser;
@@ -87,7 +87,7 @@ async function checkNotificationEvent(){
     const {asset, direction, value} = el;
     fetch(`https://api.coincap.io/v2/assets/${asset}`)
       .then((resp) => resp.json())
-      .then((json) => {
+      .then((json: AssetResponse) => {
         const jsonData = json.data;
         const actualPrice = parseFloat(jsonData.priceUsd);
 
@@ -97,7 +97,7 @@ async function checkNotificationEvent(){
 
         if(underPriceCond || overPriceCond){
           sendNotification(`${asset} is ${direction.toLowerCase()} ${value}$!!`);
-          updateDoc(docRef, {notificationEvents: arrayRemove(el)});
+          updateDoc(docRef, {notificationEvents: arrayRemove(el)})
         }
       })
       .catch((err) => console.log(err))
@@ -108,7 +108,6 @@ async function checkNotificationEvent(){
 
 const mins_millis = 60 * 1000; 
 setTimeout(checkNotificationEvent, 3 * mins_millis);
-
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

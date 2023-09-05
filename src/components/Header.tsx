@@ -21,7 +21,7 @@ function UserMenu({username}: {username: string} ){
                     <li className='usernameTxt'>{username}</li>
                     <li><hr className="dropdown-divider"></hr></li>
                     <li>
-                        <Link className="dropdown-item" to="/selection">Gestisci wallet</Link>
+                        <Link className="dropdown-item" to="/selection">Manage wallet</Link>
                     </li>
                     <li>
                         <Link className="redTxt dropdown-item" to="/" onClick={logout}>Logout</Link>
@@ -37,16 +37,17 @@ export default function Header({className}: {className: string}) {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
 
-    onAuthStateChanged( getAuth(), async (user) => {
+    onAuthStateChanged( getAuth(), (user) => {
         if(user){
             setIsLoggedIn(true);
 
-            const docRef = doc(db, 'users', user.uid)
-            const docSnap = await getDoc(docRef)
-
-            if(docSnap.exists()){
-                setUsername(docSnap.data().name as string);
-            }
+            const docRef = doc(db, 'users', user.uid) 
+            getDoc(docRef)
+              .then((docSnap) => {
+                if(docSnap.exists()){
+                    setUsername(docSnap.data().name as string);
+                }})
+              .catch((err) => console.error(err));
         }
         else{
             setIsLoggedIn(false);

@@ -4,8 +4,6 @@ export interface Crypto {
   priceUsd: number;
   changePercent24Hr: number;
   marketCapUsd: number;
-  volumeUsd24Hr: number;
-  timestamp: number;
 }
 
 export const START_CRYPTO = {
@@ -23,3 +21,40 @@ export type NotifEvent = {
   direction: string,
   value: number
 }
+
+export type AssetDataObj = {
+  "id": string,
+  "symbol": string,
+  "name": string,
+  "supply": string,
+  "maxSupply": string,
+  "marketCapUsd": string,
+  "volumeUsd24Hr": string,
+  "priceUsd": string,
+  "changePercent24Hr": string,
+  "vwap24Hr": string
+}
+
+export function RespToCrypto(resp: AssetDataObj): Crypto {
+  return {
+    name: resp.name, 
+    symbol: resp.symbol, 
+    priceUsd: parseFloat(resp.priceUsd), 
+    changePercent24Hr: parseFloat(resp.changePercent24Hr), 
+    marketCapUsd: parseFloat(resp.marketCapUsd)
+  }
+}
+
+export type AssetResponse = {
+  "data": AssetDataObj,
+  "timestamp": number
+}
+
+export type AllAssetsResponse = {
+  "data": [AssetDataObj],
+  "timestamp": number
+}
+
+const API_KEY = '4948c070-26dc-47aa-9105-be6283a3ffd4'
+export const headers = new Headers()
+headers.append("Authorization", `Bearer ${API_KEY}`)

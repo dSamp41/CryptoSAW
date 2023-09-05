@@ -38,11 +38,11 @@ export default function Wallet(){
     const userAssets = useContext(UserContext);
 
     return(<>
-            <p>Benvenuto nella tua Area Personale.<br></br>Ecco lo stato del tuo portafoglio</p>
-            <CardView assets={userAssets}/>
-            <Link to="/selection">
-                <button className='addBtn'>Aggiungi</button>
-            </Link>
+        <p>Welcome in the Personal Area.<br></br>This is your Wallet.</p>
+        <CardView assets={userAssets}/>
+        <Link to="/selection">
+            <button className='addBtn'>ADD MORE</button>
+        </Link>
     </>);
 
 }

@@ -41,7 +41,7 @@ export default function Selection(){
         label: v.label,
     }));
     
-    //selectedOpts -> asset in users/...
+    // Send selectedOpts into "asset" field in users/*user.id*
     async function sendNewAssets(){
         const newArr: string[] = selectedOptions.map((el) => (el.value))
         const auth = getAuth();
@@ -53,7 +53,6 @@ export default function Selection(){
 
             if(docSnap.exists()){
                 const oldAssets: string[] = docSnap.data().assets;
-                console.debug(`DB ASSETS: ${oldAssets}`);
 
                 for(const el of newArr){
                     const elemInDb: boolean = oldAssets.includes(el);

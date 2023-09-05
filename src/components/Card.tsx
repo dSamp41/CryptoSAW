@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Crypto, NotifEvent, START_CRYPTO } from './cryptoUtil.ts';
+import { AssetResponse, Crypto, NotifEvent, RespToCrypto, START_CRYPTO, headers } from './cryptoUtil.ts';
 import { usePrevious } from '@/hooks/usePrevious.ts';
 import { getAuth } from 'firebase/auth';
 import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebaseConf.ts';
 import { ButtonGroup } from './ButtonGroup.tsx';
+import 'bootstrap/dist/js/bootstrap.js';
 
 import './Card.css';
-
-
 
 
 const DeleteIcon = () => {
@@ -29,33 +28,34 @@ const NotificationIcon = () => {
 }
 
 function Modal ({asset}: {asset: string}) {
-  const modalId = asset + "NotifModal";
-  const inputId= `${asset}ValueInput`;
+    const modalId = asset + "NotifModal";
+    const inputId= `${asset}ValueInput`;
 
-  function saveNotifEvent(){
-    const user = getAuth().currentUser;
-    if(!user) return;
+    function saveNotifEvent(){
+        const user = getAuth().currentUser;
+        if(!user) return;
     
-    let cryptoNotifEvent: NotifEvent = {asset: '', direction: '', value: 0};
+        let cryptoNotifEvent: NotifEvent = {asset: '', direction: '', value: 0};
 
-    if(document.getElementById('ToggleGroup')){
-      const selectedBtn = document.getElementsByClassName('btn active')[0] as HTMLButtonElement;
-      const numInput = document.getElementById(inputId) as HTMLInputElement;
-      
-      if(selectedBtn) {
-        cryptoNotifEvent = {asset: asset, direction: selectedBtn.name, value: Number(numInput.value)};
-      }
+        if(document.getElementById('ToggleGroup')){
+            const selectedBtn = document.getElementsByClassName('btn active')[0] as HTMLButtonElement;
+            const numInput = document.getElementById(inputId) as HTMLInputElement;
+            
+            if(selectedBtn) {
+                cryptoNotifEvent = {asset: asset, direction: selectedBtn.name, value: Number(numInput.value)};
+            }
+        }
+
+        const docRef = doc(db, 'users', user.uid);
+        getDoc(docRef)
+          .then((docSnap) => {
+            if(docSnap.exists()){
+                updateDoc(docRef, {notificationEvents: arrayUnion(cryptoNotifEvent)})
+                  .catch((err) => console.error(err))
+            }
+          })
+        .catch((err) => console.error(err))
     }
-
-    const docRef = doc(db, 'users', user.uid)
-    getDoc(docRef)
-      .then((docSnap) => {
-        if(docSnap.exists()) updateDoc(docRef, {notificationEvents: arrayUnion(cryptoNotifEvent)})
-      })
-      .catch((err) => console.error(err))
-
-    document.getElementById(modalId)?.classList.remove('show');   
-  }
 
 
   return (
@@ -64,7 +64,7 @@ function Modal ({asset}: {asset: string}) {
         <div className="modal-content">
           
           <div className="modal-header">
-            <h1 className="modal-title fs-5">Setta un evento da notificare per {asset}</h1>
+            <h1 className="modal-title fs-5">Notify me when {asset} is:</h1>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           
@@ -76,7 +76,7 @@ function Modal ({asset}: {asset: string}) {
           </div>
 
           <div className="modal-footer">
-            <button type="button" onClick={saveNotifEvent}>Create</button>
+            <button type="button" onClick={saveNotifEvent} data-bs-dismiss="modal">Create</button>
           </div>
         </div>
       </div>
@@ -94,13 +94,13 @@ export function CardElem ({asset}: {asset: string} ){
 
   //connect to coincap API
   const getCryptoInfo = () => {
-    fetch(`https://api.coincap.io/v2/assets/${asset}`)
+    fetch(`https://api.coincap.io/v2/assets/${asset}`, {method: "GET", headers: headers})
       .then((response) => {
         if(response.ok) return response.json()
         else throw new Error("Not 2xx response")})
-      .then((json) => {
-        setCryptoData(json.data as Crypto);  
-        setTimestamp(json.timestamp as number);
+      .then((json: AssetResponse) => {
+        setCryptoData(RespToCrypto(json.data));  
+        setTimestamp(json.timestamp);
       })
       .catch((err) => console.error(err))
   };
@@ -112,7 +112,8 @@ export function CardElem ({asset}: {asset: string} ){
     return () => {clearInterval(int)}
   }, []);
 
-  function deleteAsset(){
+  //remove from user's document the asset and the notifciationEvent relative to it
+  function deleteAsset(): void {
     const auth = getAuth();
     const user = auth.currentUser;
         
@@ -121,14 +122,20 @@ export function CardElem ({asset}: {asset: string} ){
       
       getDoc(docRef)
         .then((docSnap) => { 
-          if(docSnap.exists())  
+          if(docSnap.exists()){ 
             updateDoc(docRef, {assets: arrayRemove(asset)})
+
+            //remove notificationEvents
+            const oldNotifEvents: NotifEvent[] = docSnap.data().notificationEvents;
+            for(const el of oldNotifEvents){
+              if(el.asset === asset) updateDoc(docRef, {notificationEvents: arrayRemove(el)})
+            }
+          }
         })
         .catch((err) => console.log(err))
     }
   }
 
-  
 
   const priceIncrCond = (cryptoData.priceUsd - oldValue.priceUsd) >= 0;
   
@@ -145,7 +152,6 @@ export function CardElem ({asset}: {asset: string} ){
         {/* Modal to set event to notificate */}
         <Modal asset={asset}/>
 
-
         <button className='shellBtn' onClick={deleteAsset}>
           <DeleteIcon></DeleteIcon>
         </button>
@@ -160,7 +166,6 @@ export function CardElem ({asset}: {asset: string} ){
 function MainInfo({c, ts, priceIncrCond}: {c: Crypto, ts: number, priceIncrCond: boolean}){
   const d = new Date(ts)
   const pctIncrCond: boolean = Number(c.changePercent24Hr) > 0;
-
 
     return(
       <div className='card'>
