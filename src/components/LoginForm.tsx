@@ -33,28 +33,28 @@ function MobileLoginForm({githubAuth, googleAuth, register, login, resetPassword
 
             <div className="login">
                 <form className='loginForm'>
-                    <label className='loginLabel' htmlFor="chk" aria-hidden="true">Accedi</label>
+                    <label className='loginLabel' htmlFor="chk" aria-hidden="true">Login</label>
 					<div className="social-container">
                         <a className="social" onClick={githubAuth} aria-label="Login with Github"><GithubIcon/></a>
                         <a className="social" onClick={googleAuth} aria-label="Login with Github"><i className="fab fa-google"></i></a>
                     </div>
                     
-                    <span>o usa il tuo account</span>
+                    <span>or use your account</span>
                     <input className='inputBox' type="email" placeholder="Email" id ='emailLoginBox' onChange={changeEmail}/>
                     <input className='inputBox' type="password" placeholder="Password" onChange={changePw}/>
-                    <a className="resetPw" onClick={resetPassword} href='#' title='Inserisci'>Password dimenticata?</a>
-                    <button className='ghost' onClick={login} type='button'>Accedi</button>
+                    <a className="resetPw" onClick={resetPassword} href='#' title='Inserisci'>Forgot password?</a>
+                    <button className='ghost' onClick={login} type='button'>Login</button>
                 </form>
             </div>
 
 			<div className="SU">
 				<form>
-					<label htmlFor="chk" aria-hidden="true">Registrati</label>
+					<label htmlFor="chk" aria-hidden="true">Sign Up</label>
 					<div className="social-container">
                         <a className="social" onClick={githubAuth} aria-label="Register with Github"><GithubIcon/></a>
                         <a className="social" onClick={googleAuth} aria-label="Register with Google"><i className="fab fa-google"></i></a>
                     </div>
-					
+
 					<input id='usernameRegBox' className='inputBox' type="text" name="email" placeholder="Username" onChange={changeUsername}></input>
 					<input id='emailRegBox' className='inputBox' type="email" name="email" placeholder="Email" onChange={changeEmail}></input>
 					<input id='pwRegBox' className='inputBox' type="password" name="pswd" placeholder="Password" onChange={changePw} onClick={passwordDetail}></input>
@@ -134,7 +134,7 @@ const BigLoginForm = ({githubAuth, googleAuth, register, login, resetPassword, c
                         <a href="#" className="social" onClick={googleAuth} aria-label="Register with Google"><i className="fab fa-google"></i></a>
                     </div>
 
-                    <span>or use an email</span>
+                    <span>or use your info</span>
                     <input className='inputBox' type="username" id='usernameRegBox' placeholder="Username" onChange={changeUsername} />
                     <input className='inputBox' type="email"    id='emailRegBox'    placeholder="Email"    onChange={changeEmail} />
                     <input className='inputBox' type="password" id='pwRegBox'       placeholder="Password" onChange={changePw} onClick={passwordDetail}/>
