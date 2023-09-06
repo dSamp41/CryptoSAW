@@ -21,7 +21,10 @@ import './App.css'
 
 function App() {
   const [userAssets, setUserAssets] = useState<string[]>([]);
-  const [ASSETS, setASSETS] = useState<string[]>([])
+  const [ASSETS, setASSETS] = useState<string[]>([]);
+
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('');
 
   useEffect(() => {
     fetch(`https://api.coincap.io/v2/assets/`, {method: "GET", headers: headers})
@@ -32,12 +35,17 @@ function App() {
 
   
   onAuthStateChanged( getAuth(), (user) => {
-    if(!user) return;
-    
+    if(!user){
+      setIsLoggedIn(false); 
+      return;
+    }
+
+    setIsLoggedIn(true);
     const docRef = doc(db, 'users', user.uid)
     getDoc(docRef)
       .then((docSnap) => {          
         if(docSnap.exists()){ 
+          setUsername(docSnap.data().name as string);
           setUserAssets(docSnap.data().assets as string[]);
         }
       })
@@ -47,7 +55,7 @@ function App() {
   
   return (
     <div className='App'>
-      <Header className='headerPos'/>
+      <Header isLoggedIn={isLoggedIn} username={username}/>
       <div className='mainPos'>
         <AssetsContext.Provider value={ASSETS}>
           <UserContext.Provider value={userAssets}>

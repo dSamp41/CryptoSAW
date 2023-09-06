@@ -1,9 +1,5 @@
-import { useState } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { logout } from './authUtil';
 import { Link } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/firebaseConf';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -33,34 +29,16 @@ function UserMenu({username}: {username: string} ){
     );
 }
 
-export default function Header({className}: {className: string}) {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [username, setUsername] = useState<string>('');
-
-    onAuthStateChanged( getAuth(), (user) => {
-        if(user){
-            setIsLoggedIn(true);
-
-            const docRef = doc(db, 'users', user.uid) 
-            getDoc(docRef)
-              .then((docSnap) => {
-                if(docSnap.exists()){
-                    setUsername(docSnap.data().name as string);
-                }})
-              .catch((err) => console.error(err));
-        }
-        else{
-            setIsLoggedIn(false);
-        }
-    });
-    
+export default function Header({isLoggedIn, username}: {isLoggedIn: boolean, username: string}) {  
 
     return (
-        <nav className={`navbar navbar-expand-lg header ${className}`}>
+        <nav className="navbar navbar-expand-lg header">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">CryptoSAW</Link>
                 
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" data-bs-auto-close="true" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button className="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav" data-bs-auto-close="true" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
@@ -74,10 +52,7 @@ export default function Header({className}: {className: string}) {
                             <li className="nav-item" >
                                 <Link className="nav-link" to="/wallet">Wallet</Link>
                             </li>
-                            : <></> 
-                        }
-
-                        {isLoggedIn? <></> : 
+                        : 
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login">Login</Link>
                             </li>
@@ -85,7 +60,7 @@ export default function Header({className}: {className: string}) {
 
                     </ul>
 
-                    {isLoggedIn? <UserMenu username={username}/>: <></>}
+                    {isLoggedIn ? <UserMenu username={username}/> : <></>}
 
                 </div>
             </div>
