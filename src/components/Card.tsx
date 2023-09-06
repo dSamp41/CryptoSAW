@@ -5,7 +5,6 @@ import { getAuth } from 'firebase/auth';
 import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebaseConf.ts';
 import { ButtonGroup } from './ButtonGroup.tsx';
-import 'bootstrap/dist/js/bootstrap.js';
 
 import './Card.css';
 

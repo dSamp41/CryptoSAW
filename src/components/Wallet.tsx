@@ -38,7 +38,7 @@ export default function Wallet(){
     const userAssets = useContext(UserContext);
 
     return(<>
-        <p>Welcome in the Personal Area.<br></br>This is your Wallet.</p>
+        <p>Welcome, this is your Wallet.</p>
         <CardView assets={userAssets}/>
         <Link to="/selection">
             <button className='addBtn'>ADD MORE</button>

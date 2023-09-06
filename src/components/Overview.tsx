@@ -3,7 +3,6 @@ import { AssetResponse, Crypto, RespToCrypto, START_CRYPTO, headers } from './cr
 import { usePrevious } from "@/hooks/usePrevious.ts";
 import { AssetsContext } from "@/AppContext.ts";
 
-import 'bootstrap/dist/css/bootstrap.css';
 import './Overview.css'
 import './Card.css'
 

@@ -63,7 +63,7 @@ export default function Selection(){
             }
         }
         
-        sendNotification("The selected assets has been added to your wallet");
+        sendNotification("The selected assets have been added to your wallet");
         navigate('/wallet');
     }
 
