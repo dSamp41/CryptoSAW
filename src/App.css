@@ -4,10 +4,3 @@
     height: 80vh;
     padding-top: 5vh;
 }
-
-@media screen and (max-width: 576px) {
-    .mainPos {
-        width: 90vw;
-    }
-
-}
