@@ -1,8 +1,6 @@
 import { logout } from './authUtil';
 import { Link } from 'react-router-dom';
 
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './Header.css'
 
 
