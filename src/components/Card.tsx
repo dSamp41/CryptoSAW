@@ -75,7 +75,7 @@ function Modal ({asset}: {asset: string}) {
           </div>
 
           <div className="modal-footer">
-            <button type="button" onClick={saveNotifEvent} data-bs-dismiss="modal">Create</button>
+            <button type="button" onClick={saveNotifEvent} data-bs-dismiss="modal">Set</button>
           </div>
         </div>
       </div>
