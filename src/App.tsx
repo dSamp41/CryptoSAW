@@ -18,6 +18,7 @@ import { AllAssetsResponse, AssetDataObj, headers } from './components/cryptoUti
 
 import './App.css'
 
+//hosting link: https://cryptosaw-4dee9.web.app/
 
 function App() {
   const [userAssets, setUserAssets] = useState<string[]>([]);
